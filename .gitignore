@@ -1,0 +1,9 @@
+# Configurações locais e credenciais
+config.php
+
+# Configurações do VS Code
+.vscode/
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
