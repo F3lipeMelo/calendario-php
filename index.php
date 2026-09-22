@@ -26,54 +26,116 @@ $compromissos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <hr>
 
-    <?php foreach ($compromissos as $compromisso): ?>
-
-        <h2>
-            <?php echo htmlspecialchars($compromisso["titulo"]); ?>
-        </h2>
+    <?php if (empty($compromissos)): ?>
 
         <p>
-            <?php echo htmlspecialchars($compromisso["descricao"]); ?>
+            Nenhum compromisso cadastrado.
         </p>
 
-        <p>
-            Data:
-            <?php echo $compromisso["data_compromisso"]; ?>
-        </p>
+    <?php else: ?>
 
-        <p>
-            Horário:
-            <?php echo $compromisso["hora_compromisso"]; ?>
-        </p>
+        <?php foreach ($compromissos as $compromisso): ?>
 
-        <a href="editar.php?id=<?php echo $compromisso["id"]; ?>">
-            Editar
-        </a>
+            <h2>
+                <?php echo htmlspecialchars($compromisso["titulo"]); ?>
+            </h2>
 
-        <form
-            action="excluir.php"
-            method="POST"
-            style="display:inline;"
-        >
+            <p>
+                <?php echo htmlspecialchars($compromisso["descricao"]); ?>
+            </p>
 
-            <input
-                type="hidden"
-                name="id"
-                value="<?php echo $compromisso["id"]; ?>"
+            <p>
+
+                <?php
+                    echo date(
+                        "d/m/Y",
+                        strtotime($compromisso["data_compromisso"])
+                    );
+                ?>
+
+                às
+
+                <?php
+                    echo date(
+                        "H:i",
+                        strtotime($compromisso["hora_compromisso"])
+                    );
+                ?>
+
+            </p>
+
+            <form
+                action="alterar_status.php"
+                method="POST"
+                style="display:inline;"
             >
 
-            <button
-                type="submit"
-                onclick="return confirm('Deseja realmente excluir este compromisso?')"
+                <p>
+                    Status:
+
+                    <?php if ($compromisso["concluido"]): ?>
+
+                        Concluído
+
+                    <?php else: ?>
+
+                        Pendente
+
+                    <?php endif; ?>
+                </p>
+
+                <input
+                    type="hidden"
+                    name="id"
+                    value="<?php echo $compromisso["id"]; ?>"
+                >
+
+                <button type="submit">
+
+                    <?php if ($compromisso["concluido"]): ?>
+
+                        Marcar como pendente
+
+                    <?php else: ?>
+
+                        Marcar como concluído
+
+                    <?php endif; ?>
+
+                </button>
+
+            </form>
+
+            <a href="editar.php?id=<?php echo $compromisso["id"]; ?>">
+                Editar
+            </a>
+
+            <form
+                action="excluir.php"
+                method="POST"
+                style="display:inline;"
             >
-                Excluir
-            </button>
 
-        </form>
+                <input
+                    type="hidden"
+                    name="id"
+                    value="<?php echo $compromisso["id"]; ?>"
+                >
 
-        <hr>
+                <button
+                    type="submit"
+                    onclick="return confirm('Deseja realmente excluir este compromisso?')"
+                >
+                    Excluir
+                </button>
 
-    <?php endforeach; ?>
+            </form>
+
+            <hr>
+
+        <?php endforeach; ?>
+
+    <?php endif; ?>
 
 </body>
 
