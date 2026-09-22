@@ -29,11 +29,11 @@ $compromissos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php foreach ($compromissos as $compromisso): ?>
 
         <h2>
-            <?php echo $compromisso["titulo"]; ?>
+            <?php echo htmlspecialchars($compromisso["titulo"]); ?>
         </h2>
 
         <p>
-            <?php echo $compromisso["descricao"]; ?>
+            <?php echo htmlspecialchars($compromisso["descricao"]); ?>
         </p>
 
         <p>
@@ -45,6 +45,31 @@ $compromissos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             Horário:
             <?php echo $compromisso["hora_compromisso"]; ?>
         </p>
+
+        <a href="editar.php?id=<?php echo $compromisso["id"]; ?>">
+            Editar
+        </a>
+
+        <form
+            action="excluir.php"
+            method="POST"
+            style="display:inline;"
+        >
+
+            <input
+                type="hidden"
+                name="id"
+                value="<?php echo $compromisso["id"]; ?>"
+            >
+
+            <button
+                type="submit"
+                onclick="return confirm('Deseja realmente excluir este compromisso?')"
+            >
+                Excluir
+            </button>
+
+        </form>
 
         <hr>
 
