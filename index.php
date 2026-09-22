@@ -2,11 +2,115 @@
 
 require "conexao.php";
 
-$sql = "SELECT * FROM compromissos ORDER BY data_compromisso, hora_compromisso";
+$mes = isset($_GET["mes"])
+    ? (int) $_GET["mes"]
+    : (int) date("n");
 
-$stmt = $conexao->query($sql);
+$ano = isset($_GET["ano"])
+    ? (int) $_GET["ano"]
+    : (int) date("Y");
 
-$compromissos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$nomesMeses = [
+    1 => "Janeiro",
+    2 => "Fevereiro",
+    3 => "Março",
+    4 => "Abril",
+    5 => "Maio",
+    6 => "Junho",
+    7 => "Julho",
+    8 => "Agosto",
+    9 => "Setembro",
+    10 => "Outubro",
+    11 => "Novembro",
+    12 => "Dezembro"
+];
+
+$totalDias = cal_days_in_month(
+    CAL_GREGORIAN,
+    $mes,
+    $ano
+);
+
+$primeiroDia = mktime(
+    0,
+    0,
+    0,
+    $mes,
+    1,
+    $ano
+);
+
+$diaSemanaInicio = date(
+    "N",
+    $primeiroDia
+);
+
+$mesAnterior = $mes - 1;
+$anoAnterior = $ano;
+
+if ($mesAnterior < 1) {
+
+    $mesAnterior = 12;
+    $anoAnterior--;
+
+}
+
+$proximoMes = $mes + 1;
+$proximoAno = $ano;
+
+if ($proximoMes > 12) {
+
+    $proximoMes = 1;
+    $proximoAno++;
+
+}
+
+$primeiraData = sprintf(
+    "%04d-%02d-01",
+    $ano,
+    $mes
+);
+
+$ultimaData = sprintf(
+    "%04d-%02d-%02d",
+    $ano,
+    $mes,
+    $totalDias
+);
+
+$sql = "
+    SELECT *
+    FROM compromissos
+    WHERE data_compromisso
+        BETWEEN :inicio AND :fim
+    ORDER BY data_compromisso, hora_compromisso
+";
+
+$stmt = $conexao->prepare($sql);
+
+$stmt->execute([
+    ":inicio" => $primeiraData,
+    ":fim" => $ultimaData
+]);
+
+$compromissos = $stmt->fetchAll(
+    PDO::FETCH_ASSOC
+);
+
+$compromissosPorDia = [];
+
+foreach ($compromissos as $compromisso) {
+
+    $dia = (int) date(
+        "j",
+        strtotime(
+            $compromisso["data_compromisso"]
+        )
+    );
+
+    $compromissosPorDia[$dia][] = $compromisso;
+
+}
 
 ?>
 
@@ -14,128 +118,159 @@ $compromissos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
-    <title>Meu Calendário</title>
+
+    <title>
+        Meu Calendário
+    </title>
+
 </head>
 
 <body>
 
-    <h1>Meu Calendário</h1>
+    <a
+        href="index.php?mes=<?php echo $mesAnterior; ?>&ano=<?php echo $anoAnterior; ?>"
+    >
+        ← Mês anterior
+    </a>
 
-    <a href="criar.php">Novo compromisso</a>
+    <h1>
 
-    <hr>
+        <?php echo $nomesMeses[$mes]; ?>
 
-    <?php if (empty($compromissos)): ?>
+        <?php echo $ano; ?>
 
-        <p>
-            Nenhum compromisso cadastrado.
-        </p>
+    </h1>
 
-    <?php else: ?>
+    <a
+        href="index.php?mes=<?php echo $proximoMes; ?>&ano=<?php echo $proximoAno; ?>"
+    >
+        Próximo mês →
+    </a>
 
-        <?php foreach ($compromissos as $compromisso): ?>
+    <br><br>
 
-            <h2>
-                <?php echo htmlspecialchars($compromisso["titulo"]); ?>
-            </h2>
+    <a href="criar.php">
+        Novo compromisso
+    </a>
 
-            <p>
-                <?php echo htmlspecialchars($compromisso["descricao"]); ?>
-            </p>
+    <br><br>
 
-            <p>
+    <table border="1">
+
+        <thead>
+
+            <tr>
+                <th>Seg</th>
+                <th>Ter</th>
+                <th>Qua</th>
+                <th>Qui</th>
+                <th>Sex</th>
+                <th>Sáb</th>
+                <th>Dom</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr>
 
                 <?php
-                    echo date(
-                        "d/m/Y",
-                        strtotime($compromisso["data_compromisso"])
-                    );
+
+                for (
+                    $i = 1;
+                    $i < $diaSemanaInicio;
+                    $i++
+                ) {
+
+                    echo "<td></td>";
+
+                }
+
+                $diaSemanaAtual =
+                    $diaSemanaInicio;
+
+                for (
+                    $dia = 1;
+                    $dia <= $totalDias;
+                    $dia++
+                ) {
+
+                    echo "<td>";
+
+                    echo "<strong>";
+                    echo $dia;
+                    echo "</strong>";
+
+                    echo "<br>";
+
+                    if (
+                        isset(
+                            $compromissosPorDia[$dia]
+                        )
+                    ) {
+
+                        foreach (
+                            $compromissosPorDia[$dia]
+                            as $compromisso
+                        ) {
+
+                            echo '<a href="editar.php?id='
+                                . $compromisso["id"]
+                                . '">';
+
+                            echo date(
+                                "H:i",
+                                strtotime(
+                                    $compromisso[
+                                        "hora_compromisso"
+                                    ]
+                                )
+                            );
+
+                            echo " - ";
+
+                            echo htmlspecialchars(
+                                $compromisso[
+                                    "titulo"
+                                ]
+                            );
+
+                            echo "</a>";
+
+                            echo "<br>";
+
+                        }
+
+                    }
+
+                    echo "</td>";
+
+                    if (
+                        $diaSemanaAtual == 7
+                    ) {
+
+                        echo "</tr><tr>";
+
+                        $diaSemanaAtual = 1;
+
+                    } else {
+
+                        $diaSemanaAtual++;
+
+                    }
+
+                }
+
                 ?>
 
-                às
+            </tr>
 
-                <?php
-                    echo date(
-                        "H:i",
-                        strtotime($compromisso["hora_compromisso"])
-                    );
-                ?>
+        </tbody>
 
-            </p>
-
-            <form
-                action="alterar_status.php"
-                method="POST"
-                style="display:inline;"
-            >
-
-                <p>
-                    Status:
-
-                    <?php if ($compromisso["concluido"]): ?>
-
-                        Concluído
-
-                    <?php else: ?>
-
-                        Pendente
-
-                    <?php endif; ?>
-                </p>
-
-                <input
-                    type="hidden"
-                    name="id"
-                    value="<?php echo $compromisso["id"]; ?>"
-                >
-
-                <button type="submit">
-
-                    <?php if ($compromisso["concluido"]): ?>
-
-                        Marcar como pendente
-
-                    <?php else: ?>
-
-                        Marcar como concluído
-
-                    <?php endif; ?>
-
-                </button>
-
-            </form>
-
-            <a href="editar.php?id=<?php echo $compromisso["id"]; ?>">
-                Editar
-            </a>
-
-            <form
-                action="excluir.php"
-                method="POST"
-                style="display:inline;"
-            >
-
-                <input
-                    type="hidden"
-                    name="id"
-                    value="<?php echo $compromisso["id"]; ?>"
-                >
-
-                <button
-                    type="submit"
-                    onclick="return confirm('Deseja realmente excluir este compromisso?')"
-                >
-                    Excluir
-                </button>
-
-            </form>
-
-            <hr>
-
-        <?php endforeach; ?>
-
-    <?php endif; ?>
+    </table>
 
 </body>
 
