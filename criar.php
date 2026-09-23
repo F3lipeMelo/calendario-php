@@ -136,138 +136,147 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
 
+    <div class="formulario-container">
 
-    <h1>Novo compromisso</h1>
-
-
-    <form method="POST">
+        <h1>Novo compromisso</h1>
 
 
-        <!-- ================================
-             MÊS E ANO DE RETORNO
-        ================================= -->
-
-        <input
-            type="hidden"
-            name="mes"
-            value="<?php echo $mesRetorno; ?>"
-        >
+        <form method="POST">
 
 
-        <input
-            type="hidden"
-            name="ano"
-            value="<?php echo $anoRetorno; ?>"
-        >
+            <!-- ================================
+                MÊS E ANO DE RETORNO
+            ================================= -->
+
+            <input
+                type="hidden"
+                name="mes"
+                value="<?php echo $mesRetorno; ?>"
+            >
 
 
-        <!-- ================================
-             TÍTULO
-        ================================= -->
+            <input
+                type="hidden"
+                name="ano"
+                value="<?php echo $anoRetorno; ?>"
+            >
 
-        <label for="titulo">
-            Título:
-        </label>
+
+            <!-- ================================
+                TÍTULO
+            ================================= -->
+
+            <div class="campo">
+
+                <label for="titulo">
+                    Título
+                </label>
+
+                <input
+                    type="text"
+                    id="titulo"
+                    name="titulo"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ================================
+                DESCRIÇÃO
+            ================================= -->
+
+            <div class="campo">
+
+                <label for="descricao">
+                    Descrição
+                </label>
+
+                <textarea
+                    id="descricao"
+                    name="descricao"
+                ></textarea>
+
+            </div>
+
+
+            <!-- ================================
+                DATA
+            ================================= -->
+
+            <div class="campo">
+
+                <label for="data">
+                    Data
+                </label>
+
+                <input
+                    type="date"
+                    id="data"
+                    name="data"
+                    value="<?php echo htmlspecialchars($dataSelecionada); ?>"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ================================
+                HORÁRIO
+            ================================= -->
+
+            <div class="campo">
+
+                <label for="hora">
+                    Horário
+                </label>
+
+                <input
+                    type="time"
+                    id="hora"
+                    name="hora"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ================================
+                CADASTRAR
+            ================================= -->
+
+            <div class="acoes-formulario">
+
+                <button
+                    class="botao botao-principal"
+                    type="submit"
+                >
+                    Cadastrar
+                </button>
+
+                <a
+                    class="botao"
+                    href="index.php?mes=<?php echo $mesRetorno; ?>&ano=<?php echo $anoRetorno; ?>"
+                >
+                    Cancelar
+                </a>
+
+            </div>
+
+
+        </form>
+
 
         <br>
 
-        <input
-            type="text"
-            id="titulo"
-            name="titulo"
-            required
+
+        <a
+            href="index.php?mes=<?php echo $mesRetorno; ?>&ano=<?php echo $anoRetorno; ?>"
         >
+            Cancelar
+        </a>
 
-
-        <br><br>
-
-
-        <!-- ================================
-             DESCRIÇÃO
-        ================================= -->
-
-        <label for="descricao">
-            Descrição:
-        </label>
-
-        <br>
-
-
-        <textarea
-            id="descricao"
-            name="descricao"
-        ></textarea>
-
-
-        <br><br>
-
-
-        <!-- ================================
-             DATA
-        ================================= -->
-
-        <label for="data">
-            Data:
-        </label>
-
-        <br>
-
-
-        <input
-            type="date"
-            id="data"
-            name="data"
-            value="<?php echo htmlspecialchars($dataSelecionada); ?>"
-            required
-        >
-
-
-        <br><br>
-
-
-        <!-- ================================
-             HORÁRIO
-        ================================= -->
-
-        <label for="hora">
-            Horário:
-        </label>
-
-        <br>
-
-
-        <input
-            type="time"
-            id="hora"
-            name="hora"
-            required
-        >
-
-
-        <br><br>
-
-
-        <!-- ================================
-             CADASTRAR
-        ================================= -->
-
-        <button type="submit">
-            Cadastrar
-        </button>
-
-
-    </form>
-
-
-    <br>
-
-
-    <a
-        href="index.php?mes=<?php echo $mesRetorno; ?>&ano=<?php echo $anoRetorno; ?>"
-    >
-        Cancelar
-    </a>
-
+    </div>
 
 </body>
 

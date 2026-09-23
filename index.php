@@ -193,413 +193,118 @@ $hojeAno = (int) date("Y");
 </head>
 
 <body>
+    <div class="container">
 
-    <h1>Meu Calendário</h1>
+        <header class="cabecalho">
 
+            <div>
 
-    <!-- ================================
-         NAVEGAÇÃO ENTRE MESES
-    ================================= -->
+                <h1>Meu Calendário</h1>
 
-    <a href="index.php?mes=<?php echo $mesAnterior; ?>&ano=<?php echo $anoAnterior; ?>">
-        ← Mês anterior
-    </a>
+                <p>
+                    Organize seus compromissos e atividades pessoais.
+                </p>
 
+            </div>
 
-    <h2>
+            <!-- ================================
+                NOVO COMPROMISSO
+            ================================= -->
 
-        <?php echo $nomesMeses[$mes]; ?>
+            <a
+                class="botao botao-principal"
+                href="criar.php?mes=<?php echo $mes; ?>&ano=<?php echo $ano; ?>"
+            >
+                + Novo compromisso
+            </a>
 
-        <?php echo $ano; ?>
+        </header>
 
-    </h2>
 
+        <!-- ================================
+            NAVEGAÇÃO ENTRE MESES
+        ================================= -->
 
-    <a href="index.php?mes=<?php echo $proximoMes; ?>&ano=<?php echo $proximoAno; ?>">
-        Próximo mês →
-    </a>
+        <div class="navegacao-calendario">
 
+            <a
+                class="botao"
+                href="index.php?mes=<?php echo $mesAnterior; ?>&ano=<?php echo $anoAnterior; ?>"
+            >
+                ← Anterior
+            </a>
 
-    <br><br>
 
+            <div class="mes-atual">
 
-    <!-- VOLTAR PARA O MÊS ATUAL -->
+                <h2>
+                    <?php echo $nomesMeses[$mes]; ?>
+                    <?php echo $ano; ?>
+                </h2>
 
-    <a href="index.php">
-        Mês atual
-    </a>
+                <a href="index.php">
+                    Ir para hoje
+                </a>
 
+            </div>
 
-    <br><br>
 
+            <a
+                class="botao"
+                href="index.php?mes=<?php echo $proximoMes; ?>&ano=<?php echo $proximoAno; ?>"
+            >
+                Próximo →
+            </a>
 
-    <!-- ================================
-         NOVO COMPROMISSO
-    ================================= -->
+        </div>
 
-    <a href="criar.php?mes=<?php echo $mes; ?>&ano=<?php echo $ano; ?>">
-        Novo compromisso
-    </a>
 
+        <br><br>
 
-    <br><br>
 
+        <!-- VOLTAR PARA O MÊS ATUAL -->
 
-    <!-- ================================
-         CALENDÁRIO
-    ================================= -->
+        <a href="index.php">
+            Mês atual
+        </a>
 
-    <table
-        border="1"
-        cellpadding="10"
-        cellspacing="0"
-    >
 
-        <thead>
+        <br><br>
 
-            <tr>
 
-                <th>Seg</th>
-                <th>Ter</th>
-                <th>Qua</th>
-                <th>Qui</th>
-                <th>Sex</th>
-                <th>Sáb</th>
-                <th>Dom</th>
+        <!-- ================================
+            CALENDÁRIO
+        ================================= -->
 
-            </tr>
+        <table class="calendario">
 
-        </thead>
+            <thead>
 
+                <tr>
 
-        <tbody>
+                    <th>Seg</th>
+                    <th>Ter</th>
+                    <th>Qua</th>
+                    <th>Qui</th>
+                    <th>Sex</th>
+                    <th>Sáb</th>
+                    <th>Dom</th>
 
-            <tr>
+                </tr>
 
-                <?php
+            </thead>
 
-                // Cria espaços vazios antes do dia 1
-                for (
-                    $i = 1;
-                    $i < $diaSemanaInicio;
-                    $i++
-                ) {
 
-                    echo "<td></td>";
+            <tbody>
 
-                }
+                <tr>
 
+                    <?php
 
-                $diaSemanaAtual = $diaSemanaInicio;
-
-
-                // Cria os dias do mês
-                for (
-                    $dia = 1;
-                    $dia <= $totalDias;
-                    $dia++
-                ) {
-
-
-                    // Monta a data completa daquele dia
-                    $dataDoDia = sprintf(
-                        "%04d-%02d-%02d",
-                        $ano,
-                        $mes,
-                        $dia
-                    );
-
-
-                    // Verifica se é hoje
-                    $ehHoje =
-                        $dia == $hojeDia &&
-                        $mes == $hojeMes &&
-                        $ano == $hojeAno;
-
-
-                    // Abre a célula
-                    if ($ehHoje) {
-
-                        echo '
-                            <td
-                                style="
-                                    vertical-align: top;
-                                    min-width: 140px;
-                                    height: 110px;
-                                    background-color: lightyellow;
-                                "
-                            >
-                        ';
-
-                    } else {
-
-                        echo '
-                            <td
-                                style="
-                                    vertical-align: top;
-                                    min-width: 140px;
-                                    height: 110px;
-                                "
-                            >
-                        ';
-
-                    }
-
-
-                    // ================================
-                    // NÚMERO DO DIA
-                    // ================================
-
-                    echo '<a href="criar.php?data='
-                        . $dataDoDia
-                        . '&mes='
-                        . $mes
-                        . '&ano='
-                        . $ano
-                        . '">';
-
-                    echo "<strong>";
-                    echo $dia;
-                    echo "</strong>";
-
-                    echo "</a>";
-
-                    echo "<br><br>";
-
-
-                    // ================================
-                    // COMPROMISSOS DO DIA
-                    // ================================
-
-                    if (
-                        isset(
-                            $compromissosPorDia[$dia]
-                        )
-                    ) {
-
-                        foreach (
-                            $compromissosPorDia[$dia]
-                            as $compromisso
-                        ) {
-
-                            echo "<div>";
-
-
-                            // Se estiver concluído,
-                            // deixa o texto riscado
-                            if ($compromisso["concluido"]) {
-
-                                echo "<s>";
-
-                            }
-
-
-                            // Link para editar
-                            echo '<a href="editar.php?id='
-                                . $compromisso["id"]
-                                . '&mes='
-                                . $mes
-                                . '&ano='
-                                . $ano
-                                . '">';
-
-
-                            // Horário
-                            echo date(
-                                "H:i",
-                                strtotime(
-                                    $compromisso[
-                                        "hora_compromisso"
-                                    ]
-                                )
-                            );
-
-
-                            echo " - ";
-
-
-                            // Título
-                            echo htmlspecialchars(
-                                $compromisso["titulo"]
-                            );
-
-
-                            echo "</a>";
-
-
-                            if ($compromisso["concluido"]) {
-
-                                echo "</s>";
-
-                            }
-
-
-                            echo "<br>";
-
-
-                            // ================================
-                            // ALTERAR STATUS
-                            // ================================
-
-                            echo '
-                                <form
-                                    action="alterar_status.php"
-                                    method="POST"
-                                    style="display:inline;"
-                                >
-                            ';
-
-                            echo '
-                                <input
-                                    type="hidden"
-                                    name="id"
-                                    value="'
-                                    . $compromisso["id"]
-                                    . '"
-                                >
-                            ';
-
-                            echo '
-                                <input
-                                    type="hidden"
-                                    name="mes"
-                                    value="'
-                                    . $mes
-                                    . '"
-                                >
-                            ';
-
-                            echo '
-                                <input
-                                    type="hidden"
-                                    name="ano"
-                                    value="'
-                                    . $ano
-                                    . '"
-                                >
-                            ';
-
-
-                            echo '<button type="submit">';
-
-                            if ($compromisso["concluido"]) {
-
-                                echo "Pendente";
-
-                            } else {
-
-                                echo "Concluir";
-
-                            }
-
-                            echo "</button>";
-
-                            echo "</form>";
-
-
-                            // ================================
-                            // EXCLUIR
-                            // ================================
-
-                            echo '
-                                <form
-                                    action="excluir.php"
-                                    method="POST"
-                                    style="display:inline;"
-                                >
-                            ';
-
-                            echo '
-                                <input
-                                    type="hidden"
-                                    name="id"
-                                    value="'
-                                    . $compromisso["id"]
-                                    . '"
-                                >
-                            ';
-
-                            echo '
-                                <input
-                                    type="hidden"
-                                    name="mes"
-                                    value="'
-                                    . $mes
-                                    . '"
-                                >
-                            ';
-
-                            echo '
-                                <input
-                                    type="hidden"
-                                    name="ano"
-                                    value="'
-                                    . $ano
-                                    . '"
-                                >
-                            ';
-
-                            echo '
-                                <button
-                                    type="submit"
-                                    onclick="
-                                        return confirm(
-                                            \'Deseja realmente excluir este compromisso?\'
-                                        );
-                                    "
-                                >
-                                    Excluir
-                                </button>
-                            ';
-
-                            echo "</form>";
-
-
-                            echo "</div>";
-
-                            echo "<br>";
-
-                        }
-
-                    }
-
-
-                    // Fecha a célula
-                    echo "</td>";
-
-
-                    // ================================
-                    // MUDANÇA DE SEMANA
-                    // ================================
-
-                    if ($diaSemanaAtual == 7) {
-
-                        if ($dia != $totalDias) {
-
-                            echo "</tr><tr>";
-
-                        }
-
-                        $diaSemanaAtual = 1;
-
-                    } else {
-
-                        $diaSemanaAtual++;
-
-                    }
-
-                }
-
-
-                // ================================
-                // ESPAÇOS VAZIOS NO FINAL DO MÊS
-                // ================================
-
-                if ($diaSemanaAtual != 1) {
-
+                    // Cria espaços vazios antes do dia 1
                     for (
-                        $i = $diaSemanaAtual;
-                        $i <= 7;
+                        $i = 1;
+                        $i < $diaSemanaInicio;
                         $i++
                     ) {
 
@@ -607,15 +312,309 @@ $hojeAno = (int) date("Y");
 
                     }
 
-                }
 
-                ?>
+                    $diaSemanaAtual = $diaSemanaInicio;
 
-            </tr>
 
-        </tbody>
+                    // Cria os dias do mês
+                    for (
+                        $dia = 1;
+                        $dia <= $totalDias;
+                        $dia++
+                    ) {
 
-    </table>
+
+                        // Monta a data completa daquele dia
+                        $dataDoDia = sprintf(
+                            "%04d-%02d-%02d",
+                            $ano,
+                            $mes,
+                            $dia
+                        );
+
+
+                        // Verifica se é hoje
+                        $ehHoje =
+                            $dia == $hojeDia &&
+                            $mes == $hojeMes &&
+                            $ano == $hojeAno;
+
+
+                        // Abre a célula
+                        if ($ehHoje) {
+
+                            echo '<td class="dia hoje">';
+
+                        } else {
+
+                            echo '<td class="dia">';
+
+                        }
+
+
+                        // ================================
+                        // NÚMERO DO DIA
+                        // ================================
+
+                        echo '<a
+                            class="numero-dia"
+                            href="criar.php?data='
+                            . $dataDoDia
+                            . '&mes='
+                            . $mes
+                            . '&ano='
+                            . $ano
+                            . '"
+                        >';
+
+                        echo $dia;
+                        echo "</a>";
+
+                        echo "<br><br>";
+
+
+                        // ================================
+                        // COMPROMISSOS DO DIA
+                        // ================================
+
+                        if (
+                            isset(
+                                $compromissosPorDia[$dia]
+                            )
+                        ) {
+
+                            foreach (
+                                $compromissosPorDia[$dia]
+                                as $compromisso
+                            ) {
+
+                                if ($compromisso["concluido"]) {
+
+                                    echo '<div class="compromisso concluido">';
+
+                                } else {
+
+                                    echo '<div class="compromisso">';
+
+                                }
+
+                                // Link para editar
+                                echo '<a href="editar.php?id='
+                                    . $compromisso["id"]
+                                    . '&mes='
+                                    . $mes
+                                    . '&ano='
+                                    . $ano
+                                    . '">';
+
+
+                                // Horário
+                                echo date(
+                                    "H:i",
+                                    strtotime(
+                                        $compromisso[
+                                            "hora_compromisso"
+                                        ]
+                                    )
+                                );
+
+
+                                echo " - ";
+
+
+                                // Título
+                                echo htmlspecialchars(
+                                    $compromisso["titulo"]
+                                );
+
+
+                                echo "</a>";
+
+                                echo "<br>";
+
+
+                                // ================================
+                                // ALTERAR STATUS
+                                // ================================
+
+                                echo '
+                                    <form
+                                        action="alterar_status.php"
+                                        method="POST"
+                                        style="display:inline;"
+                                    >
+                                ';
+
+                                echo '
+                                    <input
+                                        type="hidden"
+                                        name="id"
+                                        value="'
+                                        . $compromisso["id"]
+                                        . '"
+                                    >
+                                ';
+
+                                echo '
+                                    <input
+                                        type="hidden"
+                                        name="mes"
+                                        value="'
+                                        . $mes
+                                        . '"
+                                    >
+                                ';
+
+                                echo '
+                                    <input
+                                        type="hidden"
+                                        name="ano"
+                                        value="'
+                                        . $ano
+                                        . '"
+                                    >
+                                ';
+
+
+                                echo '<button class="botao-pequeno" type="submit">';
+
+                                if ($compromisso["concluido"]) {
+
+                                    echo "Pendente";
+
+                                } else {
+
+                                    echo "Concluir";
+
+                                }
+
+                                echo "</button>";
+
+                                echo "</form>";
+
+
+                                // ================================
+                                // EXCLUIR
+                                // ================================
+
+                                echo '
+                                    <form
+                                        action="excluir.php"
+                                        method="POST"
+                                        style="display:inline;"
+                                    >
+                                ';
+
+                                echo '
+                                    <input
+                                        type="hidden"
+                                        name="id"
+                                        value="'
+                                        . $compromisso["id"]
+                                        . '"
+                                    >
+                                ';
+
+                                echo '
+                                    <input
+                                        type="hidden"
+                                        name="mes"
+                                        value="'
+                                        . $mes
+                                        . '"
+                                    >
+                                ';
+
+                                echo '
+                                    <input
+                                        type="hidden"
+                                        name="ano"
+                                        value="'
+                                        . $ano
+                                        . '"
+                                    >
+                                ';
+
+                                echo '
+                                    <button
+                                        class="botao-pequeno botao-perigo"
+                                        type="submit"
+                                        onclick="
+                                            return confirm(
+                                                \'Deseja realmente excluir este compromisso?\'
+                                            );
+                                        "
+                                    >
+                                        Excluir
+                                    </button>
+                                ';
+
+                                echo "</form>";
+
+
+                                echo "</div>";
+
+                                echo "<br>";
+
+                            }
+
+                        }
+
+
+                        // Fecha a célula
+                        echo "</td>";
+
+
+                        // ================================
+                        // MUDANÇA DE SEMANA
+                        // ================================
+
+                        if ($diaSemanaAtual == 7) {
+
+                            if ($dia != $totalDias) {
+
+                                echo "</tr><tr>";
+
+                            }
+
+                            $diaSemanaAtual = 1;
+
+                        } else {
+
+                            $diaSemanaAtual++;
+
+                        }
+
+                    }
+
+
+                    // ================================
+                    // ESPAÇOS VAZIOS NO FINAL DO MÊS
+                    // ================================
+
+                    if ($diaSemanaAtual != 1) {
+
+                        for (
+                            $i = $diaSemanaAtual;
+                            $i <= 7;
+                            $i++
+                        ) {
+
+                            echo "<td></td>";
+
+                        }
+
+                    }
+
+                    ?>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </body>
 

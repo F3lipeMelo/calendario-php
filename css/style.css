@@ -1,0 +1,310 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 30px;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background-color: #f4f4f4;
+
+    color: #222;
+}
+
+a {
+    color: inherit;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+
+/* ================================
+   ESTRUTURA GERAL
+================================ */
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+
+/* ================================
+   CABEÇALHO
+================================ */
+
+.cabecalho {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 30px;
+}
+
+.cabecalho h1 {
+    margin: 0 0 5px;
+}
+
+.cabecalho p {
+    margin: 0;
+
+    color: #666;
+}
+
+
+/* ================================
+   BOTÕES
+================================ */
+
+.botao {
+    display: inline-block;
+
+    padding: 10px 16px;
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
+
+    background-color: white;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.botao:hover {
+    background-color: #eeeeee;
+}
+
+.botao-principal {
+    background-color: #222;
+    color: white;
+
+    border-color: #222;
+}
+
+.botao-principal:hover {
+    background-color: #444;
+}
+
+
+/* ================================
+   NAVEGAÇÃO DO CALENDÁRIO
+================================ */
+
+.navegacao-calendario {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+.mes-atual {
+    text-align: center;
+}
+
+.mes-atual h2 {
+    margin: 0 0 5px;
+}
+
+.mes-atual a {
+    font-size: 14px;
+
+    color: #666;
+}
+
+
+/* ================================
+   CALENDÁRIO
+================================ */
+
+.calendario {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    background-color: white;
+
+    table-layout: fixed;
+}
+
+.calendario th {
+    padding: 12px;
+
+    border: 1px solid #ddd;
+
+    background-color: #eeeeee;
+
+    text-align: center;
+}
+
+.calendario td {
+    height: 130px;
+
+    padding: 8px;
+
+    border: 1px solid #ddd;
+
+    vertical-align: top;
+}
+
+.dia {
+    background-color: white;
+}
+
+.dia:hover {
+    background-color: #fafafa;
+}
+
+.dia.hoje {
+    background-color: #fff8d6;
+}
+
+.numero-dia {
+    display: inline-flex;
+
+    width: 30px;
+    height: 30px;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-weight: bold;
+
+    text-decoration: none;
+}
+
+.numero-dia:hover {
+    background-color: #eeeeee;
+}
+
+
+/* ================================
+   COMPROMISSOS
+================================ */
+
+.compromisso {
+    margin-top: 6px;
+
+    padding: 6px;
+
+    border-radius: 5px;
+
+    background-color: #e9eef5;
+
+    font-size: 13px;
+}
+
+.compromisso > a {
+    display: block;
+
+    margin-bottom: 5px;
+
+    text-decoration: none;
+
+    font-weight: bold;
+}
+
+.compromisso.concluido {
+    opacity: 0.6;
+}
+
+.compromisso.concluido > a {
+    text-decoration: line-through;
+}
+
+
+/* ================================
+   BOTÕES PEQUENOS
+================================ */
+
+.botao-pequeno {
+    padding: 4px 7px;
+
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+    background-color: white;
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+.botao-pequeno:hover {
+    background-color: #eeeeee;
+}
+
+.botao-perigo:hover {
+    background-color: #f5dddd;
+}
+
+
+/* ================================
+   FORMULÁRIOS
+================================ */
+
+.formulario-container {
+    width: 100%;
+    max-width: 600px;
+
+    margin: 40px auto;
+
+    padding: 30px;
+
+    background-color: white;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.campo {
+    margin-bottom: 20px;
+}
+
+.campo label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-weight: bold;
+}
+
+.campo input,
+.campo textarea {
+    width: 100%;
+
+    padding: 10px;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+    background-color: white;
+}
+
+.campo textarea {
+    min-height: 120px;
+
+    resize: vertical;
+}
+
+.acoes-formulario {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 25px;
+}

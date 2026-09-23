@@ -251,109 +251,81 @@ if (!$compromisso) {
              TÍTULO
         ================================= -->
 
-        <label for="titulo">
-            Título:
-        </label>
+        <div class="campo">
 
-        <br>
+            <label for="titulo">
+                Título
+            </label>
 
+            <input
+                type="text"
+                id="titulo"
+                name="titulo"
+                value="<?php echo htmlspecialchars($compromisso["titulo"]); ?>"
+                required
+            >
 
-        <input
-            type="text"
-            id="titulo"
-            name="titulo"
-            value="<?php
-                echo htmlspecialchars(
-                    $compromisso["titulo"]
-                );
-            ?>"
-            required
-        >
-
-
-        <br><br>
+        </div>
 
 
         <!-- ================================
              DESCRIÇÃO
         ================================= -->
 
-        <label for="descricao">
-            Descrição:
-        </label>
+        <div class="campo">
 
-        <br>
+            <label for="descricao">
+                Descrição
+            </label>
 
+            <textarea
+                id="descricao"
+                name="descricao"
+            ><?php echo htmlspecialchars($compromisso["descricao"]); ?></textarea>
 
-        <textarea
-            id="descricao"
-            name="descricao"
-        ><?php
-            echo htmlspecialchars(
-                $compromisso["descricao"]
-            );
-        ?></textarea>
-
-
-        <br><br>
+        </div>
 
 
         <!-- ================================
              DATA
         ================================= -->
 
-        <label for="data">
-            Data:
-        </label>
+        <div class="campo">
 
-        <br>
+            <label for="data">
+                Data:
+            </label>
 
+            <input
+                type="date"
+                id="data"
+                name="data"
+                value="<?php echo htmlspecialchars($compromisso["data_compromisso"]); ?>"
+                required
+            >
 
-        <input
-            type="date"
-            id="data"
-            name="data"
-            value="<?php
-                echo $compromisso[
-                    "data_compromisso"
-                ];
-            ?>"
-            required
-        >
-
-
-        <br><br>
+        </div>
 
 
         <!-- ================================
              HORÁRIO
         ================================= -->
 
-        <label for="hora">
-            Horário:
-        </label>
+        <div class="campo">
 
-        <br>
+            <label for="hora">
+                Horário:
+            </label>
 
+            <input
+                type="time"
+                id="hora"
+                name="hora"
+                value="<?php echo substr($compromisso["hora_compromisso"], 0, 5);?>"
+                required
+            >
 
-        <input
-            type="time"
-            id="hora"
-            name="hora"
-            value="<?php
-                echo substr(
-                    $compromisso[
-                        "hora_compromisso"
-                    ],
-                    0,
-                    5
-                );
-            ?>"
-            required
-        >
-
-
-        <br><br>
+        </div>
 
 
         <!-- ================================
