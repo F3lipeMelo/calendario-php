@@ -2,18 +2,72 @@
 
 require "conexao.php";
 
+
+// ================================
+// DATA RECEBIDA PELO CALENDÁRIO
+// ================================
+
+$dataSelecionada = isset($_GET["data"])
+    ? $_GET["data"]
+    : "";
+
+
+// ================================
+// MÊS E ANO PARA RETORNAR
+// ================================
+
+$mesRetorno = isset($_GET["mes"])
+    ? (int) $_GET["mes"]
+    : (int) date("n");
+
+$anoRetorno = isset($_GET["ano"])
+    ? (int) $_GET["ano"]
+    : (int) date("Y");
+
+
+// ================================
+// FORMULÁRIO ENVIADO
+// ================================
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if (empty($titulo) || empty($data) || empty($hora)) {
 
-        die("Título, data e horário são obrigatórios.");
+    // Pegando dados do formulário
+    $titulo = trim($_POST["titulo"]);
+
+    $descricao = trim($_POST["descricao"]);
+
+    $data = $_POST["data"];
+
+    $hora = $_POST["hora"];
+
+
+    // Mês para retornar depois do cadastro
+    $mesRetorno = (int) $_POST["mes"];
+
+    $anoRetorno = (int) $_POST["ano"];
+
+
+    // ================================
+    // VALIDAÇÃO
+    // ================================
+
+    if (
+        empty($titulo) ||
+        empty($data) ||
+        empty($hora)
+    ) {
+
+        die(
+            "Título, data e horário são obrigatórios."
+        );
 
     }
 
-    $titulo = trim($_POST["titulo"]);
-    $descricao = trim($_POST["descricao"]);
-    $data = $_POST["data"];
-    $hora = $_POST["hora"];
+
+    // ================================
+    // INSERT
+    // ================================
 
     $sql = "
         INSERT INTO compromissos
@@ -32,36 +86,88 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         )
     ";
 
+
     $stmt = $conexao->prepare($sql);
 
+
     $stmt->execute([
+
         ":titulo" => $titulo,
+
         ":descricao" => $descricao,
+
         ":data" => $data,
+
         ":hora" => $hora
+
     ]);
 
-    header("Location: index.php");
+
+    // ================================
+    // VOLTAR PARA O CALENDÁRIO
+    // ================================
+
+    header(
+        "Location: index.php?mes="
+        . $mesRetorno
+        . "&ano="
+        . $anoRetorno
+    );
+
     exit;
+
 }
 
 ?>
 
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="css/style.css">
+
     <title>Novo compromisso</title>
+
 </head>
 
 <body>
 
+
     <h1>Novo compromisso</h1>
+
 
     <form method="POST">
 
-        <label for="titulo">Título:</label>
+
+        <!-- ================================
+             MÊS E ANO DE RETORNO
+        ================================= -->
+
+        <input
+            type="hidden"
+            name="mes"
+            value="<?php echo $mesRetorno; ?>"
+        >
+
+
+        <input
+            type="hidden"
+            name="ano"
+            value="<?php echo $anoRetorno; ?>"
+        >
+
+
+        <!-- ================================
+             TÍTULO
+        ================================= -->
+
+        <label for="titulo">
+            Título:
+        </label>
 
         <br>
 
@@ -72,35 +178,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             required
         >
 
+
         <br><br>
 
-        <label for="descricao">Descrição:</label>
+
+        <!-- ================================
+             DESCRIÇÃO
+        ================================= -->
+
+        <label for="descricao">
+            Descrição:
+        </label>
 
         <br>
+
 
         <textarea
             id="descricao"
             name="descricao"
         ></textarea>
 
+
         <br><br>
 
-        <label for="data">Data:</label>
+
+        <!-- ================================
+             DATA
+        ================================= -->
+
+        <label for="data">
+            Data:
+        </label>
 
         <br>
+
 
         <input
             type="date"
             id="data"
             name="data"
+            value="<?php echo htmlspecialchars($dataSelecionada); ?>"
             required
         >
 
+
         <br><br>
 
-        <label for="hora">Horário:</label>
+
+        <!-- ================================
+             HORÁRIO
+        ================================= -->
+
+        <label for="hora">
+            Horário:
+        </label>
 
         <br>
+
 
         <input
             type="time"
@@ -109,17 +243,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             required
         >
 
+
         <br><br>
+
+
+        <!-- ================================
+             CADASTRAR
+        ================================= -->
 
         <button type="submit">
             Cadastrar
         </button>
 
+
     </form>
+
 
     <br>
 
-    <a href="index.php">Voltar</a>
+
+    <a
+        href="index.php?mes=<?php echo $mesRetorno; ?>&ano=<?php echo $anoRetorno; ?>"
+    >
+        Cancelar
+    </a>
+
 
 </body>
 
