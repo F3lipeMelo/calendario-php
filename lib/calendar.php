@@ -76,6 +76,12 @@ function group_items_by_day(array $items, DateTimeImmutable $start, DateTimeImmu
             $grouped[$day->format('Y-m-d')][] = $item;
         }
     }
+    foreach ($grouped as &$dayItems) {
+        usort($dayItems, static fn(array $a, array $b): int =>
+            strcmp((string) $a['hora_compromisso'], (string) $b['hora_compromisso'])
+            ?: ((int) $a['id'] <=> (int) $b['id']));
+    }
+    unset($dayItems);
     return $grouped;
 }
 

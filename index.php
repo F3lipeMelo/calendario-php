@@ -77,7 +77,7 @@ $createUrl = 'criar.php?' . http_build_query(['view'=>$view, 'data'=>$selectedKe
 <?php for($day=1;$day<=(int)$end->format('d');$day++):
 $date=$start->setDate($year,$month,$day);$key=$date->format('Y-m-d');$events=$byDate[$key]??[];
 ?>
-<a class="cell <?= $key===$today->format('Y-m-d')?'today':'' ?> <?= $panelOpen&&$key===$selectedKey?'selected':'' ?>" href="<?= escape($nav($date,'month',true)) ?>" aria-label="<?= $date->format('d/m/Y') ?>, <?= count($events) ?> marcações">
+<a class="cell <?= $key===$today->format('Y-m-d')?'today':'' ?> <?= $panelOpen&&$key===$selectedKey?'selected':'' ?>" href="<?= escape($nav($date,'month',true)) ?>" aria-label="<?= $date->format('d/m/Y') ?>, <?= count($events) ?> <?= count($events)===1?'marcação':'marcações' ?>">
 <b><?= $day ?></b>
 <?php if($events): ?><span class="dots" aria-hidden="true"><?php foreach(array_slice($events,0,4) as $event): ?><i class="dot type-<?= escape($event['tipo']) ?> <?= $event['concluido']?'complete':'' ?>"></i><?php endforeach; ?><?php if(count($events)>4): ?><em>+<?= count($events)-4 ?></em><?php endif; ?></span><?php endif; ?>
 <small><?= count($events)?count($events).' '.(count($events)===1?'item':'itens'):'Livre' ?></small>
@@ -98,7 +98,7 @@ $date=$start->setDate($year,$month,$day);$key=$date->format('Y-m-d');$events=$by
 <?php else: ?><div class="empty-panel"><span>✦</span><p>Clique em um dia para ver, concluir, reabrir ou excluir suas marcações.</p></div><?php endif; ?>
 </aside></section>
 <?php elseif($view==='week'): ?>
-<section class="week-board card"><div class="week-columns">
+<section class="week-board card"><p class="swipe-hint">Deslize para ver os sete dias →</p><div class="week-columns">
 <?php for($i=0;$i<7;$i++):$date=$start->modify("+$i days");$key=$date->format('Y-m-d'); ?>
 <div class="week-col <?= $key===$today->format('Y-m-d')?'today':'' ?>">
 <a class="week-col-head" href="<?= escape($nav($date,'day')) ?>"><span><?= $weekDays[$i] ?></span><b><?= $date->format('d') ?></b></a>
