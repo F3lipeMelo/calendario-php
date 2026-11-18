@@ -1,7 +1,11 @@
 <?php
-require "conexao.php";
-if ($_SERVER["REQUEST_METHOD"] !== "POST") die("Método inválido.");
-$id=(int)($_POST["id"]??0);$mes=(int)($_POST["mes"]??date("n"));$ano=(int)($_POST["ano"]??date("Y"));
-if($id<=0) die("Compromisso inválido.");
-$stmt=$conexao->prepare("DELETE FROM compromissos WHERE id = :id");$stmt->execute([":id"=>$id]);
-header("Location: index.php?mes=$mes&ano=$ano");exit;
+require __DIR__ . '/conexao.php';
+require __DIR__ . '/lib/calendar.php';
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); exit('Método inválido.'); }
+verify_csrf();
+$id = (int) ($_POST['id'] ?? 0);
+if ($id <= 0) { http_response_code(400); exit('Marcação inválida.'); }
+$stmt = $conexao->prepare('DELETE FROM compromissos WHERE id = :id');
+$stmt->execute([':id' => $id]);
+header('Location: ' . item_url($_POST));
+exit;
