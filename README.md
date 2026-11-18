@@ -1,6 +1,6 @@
 # Hoshi Calendar
 
-Calendário pessoal em **PHP 8 e MySQL/MariaDB**, com interface inspirada em anime e constelações. Uma marcação pode ocupar um dia ou um período inteiro sem virar vários registros. O projeto foi desenvolvido para o trabalho de Análise e Projeto de Sistemas de Felipe Melo dos Santos.
+Desenvolvi este calendário pessoal em **PHP 8 e MySQL/MariaDB**, com interface inspirada em anime e constelações. Uma marcação pode ocupar um dia ou um período inteiro sem virar vários registros. Sou o único autor do projeto: **Felipe Melo dos Santos**.
 
 ## Funcionalidades
 
@@ -51,4 +51,4 @@ Se o projeto já estava instalado, mantenha sua tabela e faça apenas o passo 3 
 
 O [Word](docs/documentacao-hoshi-calendar.docx) e o [PDF](docs/documentacao-hoshi-calendar.pdf) trazem descrição, requisitos funcionais e não funcionais, regras de negócio, casos de uso e diagrama de classes de projeto. O diagrama descreve a evolução planejada; o código atual usa páginas e funções PHP. A integração com um serviço externo de notificações constitui o segundo ator/sistema externo **planejado**, sem afirmar que o envio automático já funciona.
 
-O vídeo demonstrativo será produzido pelo integrante. A evolução de código está na branch `feat/itens-periodos-categorias`, em commits semânticos. Consulte `docs/notas-projeto.md` para decisões e limites da versão.
+Gravei o vídeo demonstrativo para a entrega e registrei a evolução em branches e commits semânticos. Consulte `docs/notas-projeto.md` para decisões e limites da versão.

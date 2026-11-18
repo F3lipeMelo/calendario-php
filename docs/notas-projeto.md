@@ -16,11 +16,17 @@
 - **Atores e sistemas:** a pessoa que organiza a agenda é o ator implementado. O serviço externo de notificações aparece no projeto como extensão futura; o envio automático não faz parte da versão executável.
 - **Funcionalidades distintas:** cadastro, consulta em três visões, filtros, edição, alteração de status e exclusão.
 - **Classes de projeto:** o diagrama documenta `Usuario`, `Calendario`, `Marcacao`, `TipoMarcacao`, `Notificacao` e `ServicoNotificacao`, com atributos, operações, relacionamentos e multiplicidades. As classes são conceituais; a implementação inicial é procedural.
-- **Histórico:** desenvolvimento na branch `feat/itens-periodos-categorias`, com commits pequenos por mudança funcional, visual e documental.
+- **Histórico:** registrei o desenvolvimento em branches, com commits pequenos por mudança funcional, visual e documental.
 
 ## Limites e evolução futura
 
 - Implementar contas individuais antes de permitir agendas de vários usuários.
 - Implementar o serviço externo de notificações previsto no diagrama e no RF11.
 - Adicionar testes automatizados e uma exportação da agenda se o projeto continuar após a entrega inicial.
-- O vídeo demonstrativo será preparado por Felipe Melo dos Santos.
+- Gravei o vídeo demonstrativo para a entrega individual.
+
+## Verificações
+
+- Conferi a interface em uma tela de 320 px de largura, sem corte horizontal das ações principais.
+- Testei Tab e Enter no calendário: o foco fica visível, os dias são alcançáveis e o painel abre pelo teclado. Conferi também os rótulos dos campos do formulário.
+- Validei a sintaxe dos arquivos PHP, as colunas da migração e a leitura do PDF gerado.

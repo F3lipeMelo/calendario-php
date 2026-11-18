@@ -73,9 +73,15 @@ def main():
             elif block.text.strip():
                 name = block.style.name
                 style = styles["TitleCustom"] if name=="Title" else styles["Head1Custom"] if name=="Heading 1" else styles["Head2Custom"] if name=="Heading 2" else styles["BodyCustom"]
-                story.append(Paragraph(escape(block.text), style))
+                body = "".join(
+                    f'<font name="ArialBold">{escape(run.text)}</font>' if run.bold else escape(run.text)
+                    for run in block.runs
+                )
+                story.append(Paragraph(body or escape(block.text), style))
     pdf = SimpleDocTemplate(str(OUTPUT), pagesize=(8.5*inch,11*inch),
-        leftMargin=.78*inch,rightMargin=.78*inch,topMargin=.7*inch,bottomMargin=.68*inch)
+        leftMargin=.78*inch,rightMargin=.78*inch,topMargin=.7*inch,bottomMargin=.68*inch,
+        author="Felipe Melo dos Santos", title="Documentação de análise e projeto do Hoshi Calendar",
+        subject="Trabalho prático de Análise e Projeto de Sistemas")
     pdf.build(story,onFirstPage=page_number,onLaterPages=page_number)
     print(OUTPUT)
 
