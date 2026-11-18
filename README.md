@@ -1,22 +1,20 @@
 # Hoshi Calendar
 
-Calendário pessoal responsivo desenvolvido em PHP e MySQL para organizar compromissos com uma interface inspirada em anime e constelações. A implementação mantém o escopo acadêmico do projeto original e amplia a experiência de uso sem trocar a stack.
+Calendário pessoal em **PHP 8 e MySQL/MariaDB**, com interface inspirada em anime e constelações. Uma marcação pode ocupar um dia ou um período inteiro sem virar vários registros. O projeto foi desenvolvido para o trabalho de Análise e Projeto de Sistemas de Felipe Melo dos Santos.
 
 ## Funcionalidades
 
-- Cadastro, edição, exclusão e conclusão de compromissos.
-- Visão de mês com indicadores por bolinhas para cada dia.
-- Painel lateral com os compromissos do dia selecionado.
-- Visão de semana com resumo por dia e atalho de criação.
-- Visão de dia com agenda cronológica.
-- Navegação por períodos, botão Hoje e criação rápida já preenchida.
-- Layout responsivo, estados vazios, microinterações e feedback visual.
+- Criar, editar, concluir, reabrir e excluir marcações.
+- Classificar cada marcação como **tarefa, compromisso, prazo, lembrete, evento ou outro**.
+- Definir data inicial e data final opcional. O mesmo registro aparece em todos os dias do intervalo, inclusive ao atravessar semanas e meses.
+- Alternar entre as visões de **dia, semana e mês**. A semana resume os itens por dia; o mês mostra pontos coloridos e abre os detalhes do dia em painel lateral.
+- Filtrar por tipo, navegar entre períodos, voltar para hoje e iniciar uma marcação com a data selecionada.
+- Usar a interface em telas pequenas, com foco visível, transições e preferência por movimento reduzido.
 
-## Execução local
+## Executar localmente
 
-1. Instale PHP 8+ e MySQL/MariaDB.
-2. Crie um banco chamado `calendario`.
-3. Crie a tabela `compromissos` com as colunas usadas pelo projeto:
+1. Tenha PHP 8+ com a extensão `pdo_mysql`, além de MySQL ou MariaDB.
+2. Crie um banco chamado `calendario` e uma tabela inicial, se ainda não existir:
 
 ```sql
 CREATE TABLE compromissos (
@@ -25,22 +23,32 @@ CREATE TABLE compromissos (
     descricao TEXT NULL,
     data_compromisso DATE NOT NULL,
     hora_compromisso TIME NOT NULL,
-    concluido TINYINT(1) NOT NULL DEFAULT 0
+    concluido TINYINT(1) NOT NULL DEFAULT 0,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
-4. Copie `config.example.php` para `config.php` e informe as credenciais locais.
-5. Execute `php -S localhost:8000` na raiz do projeto e acesse `http://localhost:8000`.
+3. Execute **uma vez** o arquivo [migrations/001_periodos_e_tipos.sql](migrations/001_periodos_e_tipos.sql) no banco `calendario`. Ele adiciona `data_fim` e `tipo`, preservando os dados existentes.
+4. Copie `config.example.php` para `config.php` e informe as credenciais locais. `config.php` é ignorado pelo Git.
+5. Na raiz do projeto, execute `php -S localhost:8000` e abra `http://localhost:8000/` no navegador.
+
+Se o projeto já estava instalado, mantenha sua tabela e faça apenas o passo 3 antes de abrir esta versão. A migração não deve ser repetida no mesmo banco.
 
 ## Estrutura
 
-- `index.php`: consultas e três modos de visualização.
-- `criar.php`, `editar.php`: formulários de compromissos.
-- `alterar_status.php`, `excluir.php`: ações de manutenção.
-- `css/style.css`: tema visual, responsividade e estados de interação.
-- `js/app.js`: pequenos feedbacks de interação.
-- `docs/notas-projeto.md`: decisões, escopo acadêmico e próximos passos.
+| Caminho | Finalidade |
+| --- | --- |
+| `index.php` | Visões de dia, semana e mês, filtros e painel de detalhes |
+| `item_form.php`, `criar.php`, `editar.php` | Formulário compartilhado para cadastro e edição |
+| `alterar_status.php`, `excluir.php` | Ações de status e exclusão |
+| `lib/calendar.php` | Tipos, datas, consulta por sobreposição, agrupamento e proteção de formulários |
+| `css/style.css`, `js/app.js` | Aparência responsiva e interações |
+| `migrations/` | Evolução do banco de dados |
+| `docs/` | Documento acadêmico em Word/PDF, diagramas e [notas do projeto](docs/notas-projeto.md) |
+| `tools/` | Geradores reproduzíveis da documentação |
 
-## Escopo acadêmico
+## Documentação acadêmica
 
-O ator principal é o usuário que organiza sua agenda. Como extensão simples e justificável, o sistema prevê integração futura com um serviço externo de notificações/lembretes, que funciona como segundo ator/sistema externo. As funcionalidades implementadas já cobrem manutenção de compromissos, acompanhamento de status e consulta em diferentes perspectivas; o histórico Git registra a evolução em commits semânticos.
+O [Word](docs/documentacao-hoshi-calendar.docx) e o [PDF](docs/documentacao-hoshi-calendar.pdf) trazem descrição, requisitos funcionais e não funcionais, regras de negócio, casos de uso e diagrama de classes de projeto. O diagrama descreve a evolução planejada; o código atual usa páginas e funções PHP. A integração com um serviço externo de notificações constitui o segundo ator/sistema externo **planejado**, sem afirmar que o envio automático já funciona.
+
+O vídeo demonstrativo será produzido pelo integrante. A evolução de código está na branch `feat/itens-periodos-categorias`, em commits semânticos. Consulte `docs/notas-projeto.md` para decisões e limites da versão.
